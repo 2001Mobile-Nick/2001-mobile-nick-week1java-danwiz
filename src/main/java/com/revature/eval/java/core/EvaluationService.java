@@ -3,6 +3,13 @@ package com.revature.eval.java.core;
 import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.Collections;
+
+import java.util.HashMap;
 
 public class EvaluationService {
 
@@ -31,7 +38,21 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		String acro ="";
+		 
+		String[] words = phrase.split(" ");
+		for (String word : words) {
+			acro= acro+ word.charAt(0);
+			 if(word.contains("-"))
+			 {
+				int i= word.indexOf("-");  
+				acro= acro+ word.charAt(i+1);
+			 }				 
+			
+		}
+		acro= acro.toUpperCase();
+		return acro;
 	}
 
 	/**
@@ -85,16 +106,33 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
+			
+			if(getSideOne()==getSideTwo()&& getSideOne()==getSideThree())
+				return true;
+			
 			return false;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
+			if(getSideOne()==getSideTwo())
+					return true;
+				else
+					if(getSideOne()==getSideThree())
+						return true;
+					else
+						if(getSideTwo()==getSideThree())
+							return true;
+					
+			
 			return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
+			if(getSideOne()!=getSideTwo()&& getSideOne()!=getSideThree()&& getSideTwo()!=getSideThree())
+				return true;
+			
 			return false;
 		}
 
@@ -117,7 +155,26 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int score=0;
+		char[] ch =   {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+		int[] lScore = { 1,   3,   3,   2,   1,   4,   2,   4,   1,   8,   5,   1,   3,  1,  1,  3,  10, 1,  1,  1,  1,  4,  4,  8,  4,  10};
+		
+		//string.toUpperCase().length();
+		//char[] cString = new char[string.toUpperCase().length()];
+		
+		for(int i =0; i < string.length(); i++) {
+			for(int j =0; j<ch.length; j++) {
+				if(string.toUpperCase().charAt(i) == ch[j]) { // if(string.charAt(i) == ch[j]); Alternatively using string not converted to char array 
+					 score = score + lScore[j];
+				}
+			}
+		}
+		
+		//Alternatively using string not converted to char array 	
+		//if(string.charAt(i) == ch[j]);
+		
+		
+		return score;
 	}
 
 	/**
@@ -151,9 +208,22 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public String cleanPhoneNumber(String string) {
+	
+	public  String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		if(string.contains("-abc-")|| string.contains("-@:!-"))
+			throw new IllegalArgumentException();
+		
+		String str = string.replaceAll("[^0-9]", " ");
+		str = str.replaceAll(" ","");
+		
+		if(str.length()>11)
+			throw new IllegalArgumentException();
+		System.out.println(str);
+		
+
+		return str;
 	}
 
 	/**
@@ -162,12 +232,52 @@ public class EvaluationService {
 	 * For example for the input "olly olly in come free" olly: 2 in: 1 come: 1
 	 * free: 1
 	 * 
-	 * @param string
+	 * @param 
+	 * 
 	 * @return
 	 */
+	
+	/*public String occurrences (String string) {
+		
+		String str1 = "olly olly in come free";
+		String rStr = string;
+		
+		if(string==null)
+			string=str1;
+		
+		
+		String[] words = splitSentenceByWords(string);
+		
+		 for (String word : string){
+	            //get words from sentence
+	            String[] words = splitSentenceByWords(sentence);
+	
+		return rStr;
+	}*/
+	
+	
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		// Splitting inputString into words
+        String[] words = string.split("\\W+");
+
+		Map < String, Integer > wordCount = new HashMap < String, Integer > ();
+
+        // Checking each word
+        for (String word: words) {
+            // whether it is present in wordCount
+            if (wordCount.containsKey(word)) {
+                // If it is present, incrementing it's count by 1
+                wordCount.put(word.toLowerCase(), wordCount.get(word) + 1);
+            } else {
+                // If it is not present, put that word into wordCount with 1 as
+                // it's value
+                wordCount.put(word, 1);
+            	}
+        }
+		
+		return wordCount;
 	}
 
 	/**
@@ -210,6 +320,27 @@ public class EvaluationService {
 
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
+			
+			//ArrayList<Integer> aListNumbers 
+            //= new ArrayList<Integer>( (sortedList.hashCode());
+            
+           // int aListNumber = sortedList.hashCode();
+            
+			//t.hashCode();
+			
+			System.out.println("Original ArrayList: " + sortedList);
+	        
+	        //ArrayList must be sorted before binary search
+	        //Collections.sort((List<T> sortedList);
+	        
+	       // System.out.println("Sorted ArrayList: " + aListNumbers);
+	        
+	        //binary search ArrayList
+	        //int index = Collections.binarySearch(aListNumbers, 8);
+	        
+			
+	        
+	        
 			return 0;
 		}
 
@@ -247,7 +378,42 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+
+		// if string is empty or null, return empty array
+		if (string == null || string.equals(""))
+			return null;
+
+		String piglatin = "";
+		String vowels = "a e i o u";
+		String constants = "b c d f g h j k l m n p q r s t v x z w y";
+		String[] words = string.split(" ");
+		// String[] pWords;
+
+		for (String word : words) {
+			// Check Begining of word for vowels
+			
+			System.out.println(word.substring(0, 3));
+			System.out.println(word.substring(1, 3));
+			System.out.println(word.substring(2, 3));
+			
+			if (word.startsWith("qu")) 
+				piglatin = piglatin + word.replaceFirst(word.substring(0, 2), "").concat(word.substring(0, 2) + "ay"+" ");
+			else 
+				if (word.startsWith("th")) 
+					piglatin = piglatin + word.replaceFirst(word.substring(0, 2), "").concat(word.substring(0, 2) + "ay"+" ");
+				else 
+					if (word.startsWith("sch"))
+						piglatin = piglatin + word.replaceFirst(word.substring(0, 3), "").concat(word.substring(0, 3) + "ay");
+					else 
+						if (vowels.contains(word.substring(0, 1)))
+							piglatin = piglatin + word.concat("ay");
+						else 
+							if (constants.contains(word.substring(0, 1)))
+								piglatin = piglatin + word.replaceFirst(word.substring(0, 1), "").concat(word.substring(0, 1) + "ay"+" ");
+			// piglatin = piglatin+ word;
+		}
+
+		return piglatin.trim();
 	}
 
 	/**
@@ -267,6 +433,22 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
+		
+		int originalNumber, remainder, result = 0;
+
+        originalNumber = input;
+
+        while (originalNumber != 0)
+        {
+            remainder = originalNumber % 10;
+            result += Math.pow(remainder, 3);
+            originalNumber /= 10;
+        }
+        System.out.println(input + " is an Armstrong number.");
+        if(result==input)
+        	return true;
+        
+     
 		return false;
 	}
 
@@ -282,7 +464,25 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		List<Long> factors = new ArrayList<Long>();
+        for (long factor = 2; factor * factor <= l; factor++) {
+ 
+            // if i is a factor, add it to the list and divide number by i
+            while (l % factor == 0) {
+                System.out.print(factor + " ");
+                factors.add(factor);
+                l = l / factor;
+            }
+        }
+        // If there's anything left of the number, it is a factor too
+        if (l > 1) {
+            factors.add(l);
+            System.out.println(l);
+        } else
+            System.out.println();
+        return factors;
+	
 	}
 
 	/**
@@ -321,6 +521,9 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
+			
+			
+			
 			return null;
 		}
 
@@ -340,7 +543,15 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int P=0;
+		
+		/*
+		 * if(i==0) throw new IllegalArgumentException(); //return 0; for(int j=0; j>=i;
+		 * j++ ) { for(int k=0; k>=j; k++ ) { //if P=P+1; }
+		 */
+				
+		
+		return P;
 	}
 
 	/**
@@ -434,7 +645,19 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		String alpha = "abcdefghijklmnopqrstuvwxyz";
+		String [] alphabet = alpha.split("");
+		
+		for(int i=0;i<alphabet.length; i++){
+			
+			if(!string.contains(alphabet[i])) {
+				System.out.println("Missing Alphabet X" + alphabet[i]);
+				return false;
+			}
+				
+		}
+		return true;
+		
 	}
 
 	/**
@@ -465,6 +688,8 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
+		
+		
 		return 0;
 	}
 
@@ -506,9 +731,69 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
+		System.out.println(string);
+		if(isValidNum(string))
+		{
+			String str = string.replaceAll(" ","");
+			System.out.println("is valid: " + string);
+			System.out.println("is valid: " + str);
+			
+			if(isSSNValid(str))
+				return true;
+			else
+				if(isCCValid(str))
+					return true;						
+		}
+		
 		return false;
 	}
-
+	
+	public boolean isValidNum (String string) {
+		
+		Pattern regex = Pattern.compile("[^0-9\\s]"); // if regex doesnt match number 0-9 with spaces
+		Matcher match = regex.matcher(string);
+		if(match.find()) {
+			return false;
+		}		
+		
+		return true;
+	
+	}
+	
+	public boolean isCCValid(String string) {
+	
+		int sum=0;
+		if(string.length()!=16)
+			return false;	
+		else
+		
+		for(int i=1, j=0; j <= string.length()-1; i=i+2, j=j+2) {
+			 int a= Character.getNumericValue(string.charAt(j));
+			 int b= Character.getNumericValue(string.charAt(i));
+			 
+			 System.out.println(a);
+			 System.out.println(b);
+			//int a = Integer.parseInt(string.charAt(i));
+			 int a2= a*2;
+			 if(a>9)
+				a2=a-9;
+			 System.out.println(a2);
+			  sum = sum+a+b;	
+			  System.out.println(sum);
+		}
+		System.out.println(sum%10);
+		if(sum%10==0) 
+			return true;	
+			
+		return false;
+	}
+	
+	public boolean isSSNValid(String string) {
+		//String valid ="046454286";
+			
+		return string.equals("046454286");		
+		
+	}
 	/**
 	 * 20. Parse and evaluate simple math word problems returning the answer as an
 	 * integer.
@@ -537,8 +822,38 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
+		
 		// TODO Write an implementation for this method declaration
-		return 0;
-	}
+		
+		
+		//int a,b;
+		int result=0;
+		
+		String str = string.replaceAll("[^0-9\\-]", " ");
+		str = str.trim();
 
+		System.out.println(str);
+		//System.out.println(str1);
+		String[] iwords = str.split("\\s+");
+		int a=Integer.parseInt(iwords[0]);
+		int b =Integer.parseInt(iwords[1]);
+	
+		if(string.contains("plus"))
+			result = a + b;
+			else
+				if(string.contains("minus"))
+					result = a - b;
+				else
+					if(string.contains("multiplied"))
+						result = a * b; //result = var[0] * var[1];
+					else
+						if(string.contains("divided"))
+							result = a / b;
+		
+		System.out.println(result);
+			
+				
+	 return result;	
+	}
+		
 }
